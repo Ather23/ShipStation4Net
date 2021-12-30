@@ -137,12 +137,35 @@ namespace ShipStation4Net.Clients
 
         /// <summary>
         /// An alias of CreateAsync because updates are on the same endpoint as creates.
+        /// ShipStation recommends using this method instead of calling the create api multiple times.
+        /// https://www.shipstation.com/docs/api/orders/create-update-multiple-orders/
         /// </summary>
         /// <param name="item">The item to update.</param>
         /// <returns>The updated order.</returns>
         public Task<Order> UpdateAsync(Order item)
         {
             return CreateAsync(item);
+        }
+
+        /// <summary>
+        /// Will create a list of orders in bulk. If the orderKey is supplied then the order will
+        /// be updated.
+        /// </summary>
+        /// <param name="items">List of new items to create</param>
+        /// <returns>BulkOrderResponse which contains created orders</returns>
+        public Task<BulkOrderResponse> BulkCreateAsync(List<Order> items)
+        {
+            return BulkPostDataAsync<List<Order>, BulkOrderResponse>("createorders", items);
+        }
+
+        /// <summary>
+        /// An alias for BulkCreateAsync which updates all items in the list.
+        /// </summary>
+        /// <param name="items">List of new items to update</param>
+        /// <returns>BulkOrderResponse which contains updated orders</returns>
+        public Task<BulkOrderResponse> BulkUpdateAsync(List<Order> items)
+        {
+            return BulkCreateAsync(items);
         }
 
         /// <summary>

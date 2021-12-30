@@ -189,7 +189,12 @@ namespace ShipStation4Net
 			return PostDataAsync<T, T>(resourceEndpoint, data);
 		}
 
-		protected Task<T> PutDataAsync<T>(int id, T data)
+        protected Task<U> BulkPostDataAsync<T, U>(string resourceEndpoint, T data) where U : class
+        {
+            return PostDataAsync<T, U>(resourceEndpoint, data);
+        }
+
+        protected Task<T> PutDataAsync<T>(int id, T data)
 		{
 			return PutDataAsync(string.Format("{0}/{1}", BaseUri, id), data);
 		}
